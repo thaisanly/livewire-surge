@@ -9,7 +9,7 @@
                 </label>
 
                 <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <div class="max-w-lg flex rounded-md shadow-sm">
+                    <div class="flex rounded-md shadow-sm">
                         <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
                             surge.com/
                         </span>
@@ -26,7 +26,7 @@
                 </label>
 
                 <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <div class="max-w-lg flex rounded-md shadow-sm">
+                    <div class="flex rounded-md shadow-sm">
                         <textarea wire:model="about" id="about" rows="3" class="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"></textarea>
                     </div>
                     @error('about') <div class="mt-1 text-red-500 text-sm">{{ $message }}</div> @enderror
@@ -59,18 +59,12 @@
 
         <div class="mt-8 border-t border-gray-200 pt-5">
             <div class="space-x-3 flex justify-end items-center">
-                <span
-                    x-data="{ open: false }"
-                    x-init="
+                <span x-data="{ open: false }" x-init="
                         @this.on('notify-saved', () => {
                             if (open === false) setTimeout(() => { open = false }, 2500);
                             open = true;
                         })
-                    "
-                    x-show.transition.out.duration.1000ms="open"
-                    style="display: none;"
-                    class="text-gray-500"
-                >Saved!</span>
+                    " x-show.transition.out.duration.1000ms="open" style="display: none;" class="text-gray-500">Saved!</span>
 
                 <span class="inline-flex rounded-md shadow-sm">
                     <button type="button" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
