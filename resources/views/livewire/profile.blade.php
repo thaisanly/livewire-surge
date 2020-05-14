@@ -26,7 +26,7 @@
                 </label>
 
                 <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <x-input-date wire:model.lazy="birthday" />
+                    <x-input-date wire:model.lazy="birthday" id="birthday" />
 
                     @error('birthday') <div class="mt-1 text-red-500 text-sm">{{ $message }}</div> @enderror
                 </div>
