@@ -21,6 +21,18 @@
             </div>
 
             <div class="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                <label for="birthday" class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
+                    Birthday
+                </label>
+
+                <div class="mt-1 sm:mt-0 sm:col-span-2">
+                    <x-input-date wire:model.lazy="birthday" />
+
+                    @error('birthday') <div class="mt-1 text-red-500 text-sm">{{ $message }}</div> @enderror
+                </div>
+            </div>
+
+            <div class="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                 <label for="about" class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
                     About
                 </label>
