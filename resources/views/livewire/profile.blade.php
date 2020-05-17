@@ -7,6 +7,13 @@
                 <x-input.text wire:model="username" id="username" leading-add-on="surge.com/" />
             </x-input.group>
 
+            <x-input.group label="Count" for="count">
+                <div wire:ignore>
+                    Count: <button type="button" x-data="{ count: 0 }" @click="count++" x-text="count">0</button>
+                </div>
+
+            </x-input.group>
+
             <x-input.group label="About" for="about" :error="$errors->first('about')" help-text="Write a few sentances about yourself.">
                 <x-input.textarea wire:model="about" id="about" />
             </x-input.group>
