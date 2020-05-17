@@ -38,8 +38,9 @@
                 </label>
 
                 <div class="mt-1 sm:mt-0 sm:col-span-2">
-                    <x-input-rich-text wire:model.lazy="about" :initial-value="$about" />
-
+                    <div class="flex rounded-md shadow-sm">
+                        <textarea wire:model="about" id="about" rows="3" class="form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"></textarea>
+                    </div>
                     @error('about') <div class="mt-1 text-red-500 text-sm">{{ $message }}</div> @enderror
                     <p class="mt-2 text-sm text-gray-500">Write a few sentences about yourself.</p>
                 </div>
