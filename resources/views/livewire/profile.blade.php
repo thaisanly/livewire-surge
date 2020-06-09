@@ -18,7 +18,11 @@
             <x-input.group label="Photo" for="photo" :error="$errors->first('newAvatar')">
                 <div class="flex items-center">
                     <span class="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                        <img src="{{ auth()->user()->avatarUrl() }}" alt="Profile Photo">
+                        @if ($newAvatar)
+                            <img src="{{ $newAvatar->temporaryUrl() }}" alt="Profile Photo">
+                        @else
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="Profile Photo">
+                        @endif
                     </span>
 
                     <span class="ml-5 rounded-md shadow-sm">
