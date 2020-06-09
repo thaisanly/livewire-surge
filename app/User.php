@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Storage;
 
 class User extends Authenticatable
 {
@@ -22,6 +23,8 @@ class User extends Authenticatable
 
     public function avatarUrl()
     {
-        return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
+        return $this->avatar
+            ? Storage::disk('avatars')->url($this->avatar)
+            : 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
     }
 }
