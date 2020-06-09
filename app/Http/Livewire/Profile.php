@@ -27,7 +27,7 @@ class Profile extends Component
             'username' => 'max:24',
             'about' => 'max:140',
             'birthday' => 'sometimes',
-            'newAvatar' => 'mimes:pdf|max:1000',
+            'newAvatar' => 'image|max:10',
         ]);
 
         $filename = $this->newAvatar->store('/', 'avatars');
