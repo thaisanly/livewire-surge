@@ -13,7 +13,6 @@ class Profile extends Component
     public $about = '';
     public $birthday = null;
     public $newAvatar;
-    public $newAvatars = [];
 
     public function mount()
     {
@@ -28,7 +27,7 @@ class Profile extends Component
             'username' => 'max:24',
             'about' => 'max:140',
             'birthday' => 'sometimes',
-            'newAvatar' => 'image|max:10',
+            'newAvatar' => 'image|max:1000',
         ]);
 
         $filename = $this->newAvatar->store('/', 'avatars');
