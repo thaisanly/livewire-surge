@@ -27,17 +27,22 @@ class Profile extends Component
             'username' => 'max:24',
             'about' => 'max:140',
             'birthday' => 'sometimes',
-            'newAvatar' => 'image|max:1000',
+            'newAvatar' => 'nullable|image|max:1000',
         ]);
-
-        $filename = $this->newAvatar->store('/', 'avatars');
 
         auth()->user()->update([
             'username' => $this->username,
             'about' => $this->about,
             'birthday' => $this->birthday,
-            'avatar' => $filename,
         ]);
+
+        if ($this->newAvatar) {
+            $filename = $this->newAvatar->store('/', 'avatars');
+
+            auth()->user()->update([
+                'avatar' => $filename,
+            ]);
+        }
 
         $this->emitSelf('notify-saved');
     }

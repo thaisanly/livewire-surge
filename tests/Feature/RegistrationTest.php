@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Hash;
@@ -25,8 +25,8 @@ class RegistrationTest extends TestCase
     {
         Livewire::test('auth.register')
             ->set('email', 'calebporzio@gmail.com')
-            ->set('password', 'secret')
-            ->set('passwordConfirmation', 'secret')
+            ->set('password', 'password')
+            ->set('passwordConfirmation', 'password')
             ->call('register')
             ->assertRedirect('/');
 
@@ -39,8 +39,8 @@ class RegistrationTest extends TestCase
     {
         Livewire::test('auth.register')
             ->set('email', '')
-            ->set('password', 'secret')
-            ->set('passwordConfirmation', 'secret')
+            ->set('password', 'password')
+            ->set('passwordConfirmation', 'password')
             ->call('register')
             ->assertHasErrors(['email' => 'required']);
     }
@@ -50,8 +50,8 @@ class RegistrationTest extends TestCase
     {
         Livewire::test('auth.register')
             ->set('email', 'calebporzio')
-            ->set('password', 'secret')
-            ->set('passwordConfirmation', 'secret')
+            ->set('password', 'password')
+            ->set('passwordConfirmation', 'password')
             ->call('register')
             ->assertHasErrors(['email' => 'email']);
     }
@@ -66,8 +66,8 @@ class RegistrationTest extends TestCase
 
         Livewire::test('auth.register')
             ->set('email', 'calebporzio@gmail.com')
-            ->set('password', 'secret')
-            ->set('passwordConfirmation', 'secret')
+            ->set('password', 'password')
+            ->set('passwordConfirmation', 'password')
             ->call('register')
             ->assertHasErrors(['email' => 'unique']);
     }
@@ -93,7 +93,7 @@ class RegistrationTest extends TestCase
         Livewire::test('auth.register')
             ->set('email', 'calebporzio@gmail.com')
             ->set('password', '')
-            ->set('passwordConfirmation', 'secret')
+            ->set('passwordConfirmation', 'password')
             ->call('register')
             ->assertHasErrors(['password' => 'required']);
     }
@@ -104,7 +104,7 @@ class RegistrationTest extends TestCase
         Livewire::test('auth.register')
             ->set('email', 'calebporzio@gmail.com')
             ->set('password', 'secre')
-            ->set('passwordConfirmation', 'secret')
+            ->set('passwordConfirmation', 'password')
             ->call('register')
             ->assertHasErrors(['password' => 'min']);
     }
@@ -114,7 +114,7 @@ class RegistrationTest extends TestCase
     {
         Livewire::test('auth.register')
             ->set('email', 'calebporzio@gmail.com')
-            ->set('password', 'secret')
+            ->set('password', 'password')
             ->set('passwordConfirmation', 'not-secret')
             ->call('register')
             ->assertHasErrors(['password' => 'same']);

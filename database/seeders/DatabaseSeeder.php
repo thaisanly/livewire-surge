@@ -1,14 +1,16 @@
 <?php
 
-use App\User;
+namespace Database\Seeders;
+
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        factory(User::class)->create([
-            'email' => 'dev@surge.com'
+        User::factory()->create([
+            'email' => 'dev@surge.com',
         ]);
     }
 }
