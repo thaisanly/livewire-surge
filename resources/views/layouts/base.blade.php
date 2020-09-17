@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@1.2.3/dist/trix.css">
 </head>
 <body class="antialiased font-sans bg-gray-200">
-    @yield('content')
+    {{ $slot }}
 
     @livewireScripts
     <script src="https://unpkg.com/moment"></script>

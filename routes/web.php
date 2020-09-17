@@ -1,19 +1,24 @@
 <?php
 
+use App\Http\Livewire\Auth\Login;
+use App\Http\Livewire\Auth\Register;
+use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\Profile;
+
 Route::redirect('/', 'dashboard');
 
 /**
  * App Routes
  */
 Route::middleware('auth')->group(function () {
-    Route::livewire('/dashboard', 'dashboard');
-    Route::livewire('/profile', 'profile');
+    Route::get('/dashboard', Dashboard::class);
+    Route::get('/profile', Profile::class);
 });
 
 /**
  * Authentication
  */
 Route::middleware('guest')->group(function () {
-    Route::livewire('/login', 'auth.login')->layout('layouts.auth')->name('auth.login');
-    Route::livewire('/register', 'auth.register')->layout('layouts.auth')->name('auth.register');
+    Route::get('/login', Login::class)->name('auth.login');
+    Route::get('/register', Register::class)->name('auth.register');
 });
