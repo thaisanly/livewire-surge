@@ -4,22 +4,22 @@
     <form wire:submit.prevent="save">
         <div class="mt-6 sm:mt-5 space-y-6">
             <x-input.group label="Username" for="username" :error="$errors->first('username')">
-                <x-input.text wire:model="username" id="username" leading-add-on="surge.com/" />
+                <x-input.text wire:model="user.username" id="username" leading-add-on="surge.com/" />
             </x-input.group>
 
             <x-input.group label="Birthday" for="birthday" :error="$errors->first('birthday')">
-                <x-input.date wire:model="birthday" id="birthday" placeholder="MM/DD/YYYY" />
+                <x-input.date wire:model="user.birthday" id="birthday" placeholder="MM/DD/YYYY" />
             </x-input.group>
 
             <x-input.group label="About" for="about" :error="$errors->first('about')" help-text="Write a few sentances about yourself.">
-                <x-input.rich-text wire:model.lazy="about" id="about" :initial-value="$about" />
+                <x-input.rich-text wire:model.lazy="user.about" id="about" :initial-value="$user->about" />
             </x-input.group>
 
-            <x-input.group label="Photo" for="photo" :error="$errors->first('newAvatar')">
-                <x-input.file-upload wire:model="newAvatar" id="photo">
+            <x-input.group label="Photo" for="photo" :error="$errors->first('upload')">
+                <x-input.file-upload wire:model="upload" id="photo">
                     <span class="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                        @if ($newAvatar)
-                            <img src="{{ $newAvatar->temporaryUrl() }}" alt="Profile Photo">
+                        @if ($upload)
+                            <img src="{{ $upload->temporaryUrl() }}" alt="Profile Photo">
                         @else
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="Profile Photo">
                         @endif
