@@ -13,6 +13,7 @@ class CreateTransactionsTable extends Migration
             $table->string('title');
             $table->integer('amount');
             $table->string('status');
+            $table->date('date');
             $table->timestamps();
         });
     }
