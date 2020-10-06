@@ -1,5 +1,5 @@
 <x-layouts.base>
-    <div class="h-screen flex overflow-hidden bg-gray-100" x-data="{ sidebarOpen: false }" @keydown.window.escape="sidebarOpen = false">
+    <div class="h-screen flex overflow-hidden bg-cool-gray-100" x-data="{ sidebarOpen: false }" @keydown.window.escape="sidebarOpen = false">
         <!-- Off-canvas menu for mobile -->
         <div x-show="sidebarOpen" class="md:hidden" style="display: none;">
             <div class="fixed inset-0 flex z-40">

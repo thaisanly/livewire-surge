@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-semibold text-gray-900">Profile</h1>
 
     <form wire:submit.prevent="save">
-        <div class="mt-6 sm:mt-5 space-y-6">
+        <div class="mt-6 sm:mt-5">
             <x-input.group label="Username" for="username" :error="$errors->first('username')">
                 <x-input.text wire:model="user.username" id="username" leading-add-on="surge.com/" />
             </x-input.group>

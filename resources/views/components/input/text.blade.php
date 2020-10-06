@@ -9,7 +9,5 @@
         </span>
     @endif
 
-    <input {{ $attributes }}
-        class="{{ $leadingAddOn ? 'rounded-none rounded-r-md' : '' }} flex-1 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-    />
+    <input {{ $attributes->merge(['class' => 'flex-1 form-input border-cool-gray-300 block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5' . ($leadingAddOn ? ' rounded-none rounded-r-md' : '')]) }}/>
 </div>
