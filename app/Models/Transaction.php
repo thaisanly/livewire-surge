@@ -11,5 +11,16 @@ class Transaction extends Model
 
     protected $casts = ['date' => 'date'];
 
-    //
+    public function getStatusColorAttribute()
+    {
+        return [
+            'success' => 'green',
+            'failed' => 'red',
+        ][$this->status] ?? 'cool-gray';
+    }
+
+    public function getDateForHumansAttribute()
+    {
+        return $this->date->format('M, d Y');
+    }
 }
