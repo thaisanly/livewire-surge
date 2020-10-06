@@ -8,7 +8,8 @@
 
                 <x-input.text id="search" wire:model="search" placeholder="Search Transactions..." />
 
-                <button type="button" wire:click="$toggle('showFilters')" class="ml-4 text-sm text-cool-gray-500 font-medium focus:outline-none focus:text-indigo-700 hover:underline">@if ($showFilters) Hide @endif Advanced Search...</button>
+                <x-button.link wire:click="$toggle('showFilters')" class="ml-4 text-sm">@if ($showFilters) Hide @endif Advanced Search...</x-button.link>
+
             </div>
 
             <div class="w-1/4 flex justify-end space-x-2">
@@ -125,7 +126,7 @@
                             </x-table.cell>
 
                             <x-table.cell>
-                                <button type="button" wire:click="edit({{ $transaction->id }})" class="focus:outline-none focus:underline">Edit</button>
+                                <x-button.link wire:click="edit({{ $transaction->id }})">Edit</x-button.link>
                             </x-table.cell>
                         </x-table.row>
                     @empty
