@@ -14,7 +14,7 @@ class Transaction extends Model
 
     public function getDateAttribute()
     {
-        return $this->created_at->format('m/d/Y');
+        return optional($this->created_at)->format('m/d/Y');
     }
 
     public function setDateAttribute($value)

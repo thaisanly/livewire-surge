@@ -17,7 +17,7 @@ class TransactionFactory extends Factory
             'title' => 'Payment to ' . $this->faker->name,
             'amount' => rand(10, 500),
             'status' => Arr::random(['success', 'processing', 'failed']),
-            'created_at' => Carbon::now()->subDays(rand(1, 365)),
+            'created_at' => Carbon::now()->subDays(rand(1, 365))->startOfDay(),
         ];
     }
 }

@@ -8,30 +8,67 @@
 
                 <x-input.text id="search" wire:model="search" placeholder="Search Transactions..." />
 
-                <!-- <button type="button" class="ml-4 text-sm text-cool-gray-500 font-medium hover:underline">Advanced Search...</button> -->
+                <button type="button" wire:click="$toggle('showFilters')" class="ml-4 text-sm text-cool-gray-500 font-medium focus:outline-none focus:text-indigo-700 hover:underline">@if ($showFilters) Hide @endif Advanced Search...</button>
             </div>
 
             <div class="w-1/4 flex justify-end space-x-2">
                 <x-dropdown label="Bulk Actions">
-                    <x-dropdown.item type="button" class="flex items-center space-x-1">
+                    <x-dropdown.item type="button" wire:click="exportChecked" class="flex items-center space-x-1">
                         <x-icon.download class="text-cool-gray-400" /> <span>Export CSV</span>
                     </x-dropdown.item>
 
-                    <x-dropdown.item type="button" class="flex items-center space-x-1">
+                    <x-dropdown.item type="button" wire:click="confirmDelete" class="flex items-center space-x-1">
                         <x-icon.trash  class="text-cool-gray-400" /> <span>Delete</span>
                     </x-dropdown.item>
                 </x-dropdown>
 
-                <x-button.primary class="flex items-center space-x-1">
+                <x-button.primary wire:click="create" class="flex items-center space-x-1">
                     <x-icon.plus/> <span class="font-medium tracking-wide">New</span>
                 </x-button.primary>
             </div>
         </div>
 
+        <div>
+            @if ($showFilters)
+                <div class="my-4 bg-cool-gray-200 rounded p-4 flex relative">
+                    <div class="w-1/2 pr-2 space-y-3">
+                        <x-input.group inline label="Status" for="filter-status" :error="$errors->first('filters.status')">
+                            <x-input.select wire:model="filters.status" id="filter-status">
+                                <option value="">Select Status...</option>
+                                <option value="processing">Processing</option>
+                                <option value="success">Success</option>
+                                <option value="failed">Failed</option>
+                            </x-input.select>
+                        </x-input.group>
+
+                        <x-input.group inline label="Above Amount" for="filter-min" :error="$errors->first('filters.amount-min')">
+                            <x-input.money wire:model.lazy="filters.amount-min" id="filter-min" />
+                        </x-input.group>
+
+                        <x-input.group inline label="Below Amount" for="filter-max" :error="$errors->first('filters.amount-max')">
+                            <x-input.money wire:model.lazy="filters.amount-max" id="filter-max" />
+                        </x-input.group>
+                    </div>
+
+                    <div class="w-1/2 pl-2 space-y-3">
+                        <x-input.group inline label="After Date" for="filter-after" :error="$errors->first('filters.date-after')">
+                            <x-input.date wire:model="filters.date-after" id="filter-after" placeholder="Before..." />
+                        </x-input.group>
+
+                        <x-input.group inline label="Before Date" for="filter-before" :error="$errors->first('filters.date-before')">
+                            <x-input.date wire:model="filters.date-before" id="filter-before" placeholder="After..." />
+                        </x-input.group>
+
+                        <button wire:click="resetFilters" class="absolute bottom-0 focus:outline-none focus:underline font-medium px-6 py-4 right-0 text-cool-gray-600 text-sm">Reset Filters</button>
+                    </div>
+                </div>
+            @endif
+        </div>
+
         <div class="flex flex-col mt-4">
             <x-table>
                 <x-slot name="head">
-                    <x-table.heading class="pr-0"><x-input.checkbox wire:model="checkedPage"/></x-table.heading>
+                    <x-table.heading class="pr-0 w-8"><x-input.checkbox wire:model="checkedPage"/></x-table.heading>
                     <x-table.heading wire:click="sortBy('title')" sortable :direction="$sortField === 'title' ? $sortDirection : null">Transaction</x-table.heading>
                     <x-table.heading wire:click="sortBy('amount')" sortable :direction="$sortField === 'amount' ? $sortDirection : null">Amount</x-table.heading>
                     <x-table.heading wire:click="sortBy('status')" sortable :direction="$sortField === 'status' ? $sortDirection : null">Status</x-table.heading>
@@ -53,8 +90,8 @@
                         </x-table.row>
                     @endif
 
-                    @foreach ($transactions as $transaction)
-                        <x-table.row wire:key="table.row.{{ $transaction->id }}">
+                    @forelse ($transactions as $transaction)
+                        <x-table.row wire:key="table.row.{{ $transaction->id }}" wire:loading.class.delay="opacity-50">
                             <x-table.cell class="pr-0">
                                 <x-input.checkbox wire:model="checked" value="{{ $transaction->id }}"/>
                             </x-table.cell>
@@ -91,7 +128,18 @@
                                 <button type="button" wire:click="edit({{ $transaction->id }})" class="focus:outline-none focus:underline">Edit</button>
                             </x-table.cell>
                         </x-table.row>
-                    @endforeach
+                    @empty
+                        <x-table.row>
+                            <x-table.cell colspan="6">
+                                <div class="flex items-center justify-center py-12 space-x-2 text-cool-gray-400">
+                                    <x-icon.inbox class="w-8 h-8" />
+                                    <span class="font-medium text-2xl">
+                                        No transactions found...
+                                    </span>
+                                </div>
+                            </x-table.cell>
+                        </x-table.row>
+                    @endforelse
                 </x-slot>
             </x-table>
 
@@ -111,7 +159,7 @@
                 @if ($editing)
                     <div>
                         <x-input.group label="Title" for="title" :error="$errors->first('editing.title')">
-                            <x-input.text wire:model="editing.title" id="title" />
+                            <x-input.text wire:model="editing.title" id="title" autofocus/>
                         </x-input.group>
 
                         <x-input.group label="Status" for="status" :error="$errors->first('editing.status')">
@@ -137,6 +185,24 @@
                 <x-button.secondary wire:click="$set('showEditModal', false)">Cancel</x-button.secondary>
 
                 <x-button.primary type="submit">Save</x-button.primary>
+            </x-slot>
+        </x-modal.dialog>
+    </form>
+
+    <form wire:submit.prevent="deleteChecked">
+        <x-modal.confirmation wire:model.defer="showDeleteModal">
+            <x-slot name="title">
+                Are you sure?
+            </x-slot>
+
+            <x-slot name="content">
+                This action is irreversible.
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-button.secondary wire:click="$set('showDeleteModal', false)">Cancel</x-button.secondary>
+
+                <x-button.primary type="submit">Delete</x-button.primary>
             </x-slot>
         </x-modal.dialog>
     </form>

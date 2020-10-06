@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire\DataTable;
 
-use Livewire\Livewire;
-
-
 trait WithCheckboxes
 {
     public $checkedPage = false;
     public $checkedAll = false;
     public $checked = [];
+
+    protected function initializeWithCheckBoxes()
+    {
+        $this->beforeRender(function () {
+            $this->checkIfCheckedAll();
+        });
+    }
 
     public function updatedChecked()
     {
@@ -38,5 +42,12 @@ trait WithCheckboxes
         if ($this->checkedAll) {
             $this->checked = $this->rows->pluck('id')->map(fn ($id) => (string) $id);
         }
+    }
+
+    public function getCheckedRowsQueryProperty()
+    {
+        return $this->checkedAll
+            ? (clone $this->rowsQuery)
+            : (clone $this->rowsQuery->whereKey($this->checked));
     }
 }
