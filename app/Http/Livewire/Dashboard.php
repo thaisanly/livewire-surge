@@ -2,36 +2,40 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Transaction;
 use Livewire\Component;
+use App\Models\Transaction;
 use Livewire\WithPagination;
+use Illuminate\Support\Carbon;
 
 class Dashboard extends Component
 {
     use WithPagination;
 
-    public $search = '';
     public $sortField;
     public $sortDirection = 'asc';
     public $showEditModal = false;
+    public $showFilters = false;
+    public $filters = [
+        'search' => '',
+        'status' => '',
+        'amount-min' => null,
+        'amount-max' => null,
+        'date-min' => null,
+        'date-max' => null,
+    ];
     public Transaction $editing;
 
     protected $queryString = ['sortField', 'sortDirection'];
 
-    public function rules()
-    {
-        return [
-            'editing.title' => 'required|min:3',
-            'editing.amount' => 'required',
-            'editing.status' => 'required|in:'.collect(Transaction::STATUSES)->keys()->implode(','),
-            'editing.date_for_editing' => 'required',
-        ];
-    }
+    public function rules() { return [
+        'editing.title' => 'required|min:3',
+        'editing.amount' => 'required',
+        'editing.status' => 'required|in:'.collect(Transaction::STATUSES)->keys()->implode(','),
+        'editing.date_for_editing' => 'required',
+    ]; }
 
-    public function mount()
-    {
-        $this->editing = $this->makeBlankTransaction();
-    }
+    public function mount() { $this->editing = $this->makeBlankTransaction(); }
+    public function updatedFilters() { $this->resetPage(); }
 
     public function sortBy($field)
     {
@@ -70,10 +74,20 @@ class Dashboard extends Component
         $this->showEditModal = false;
     }
 
+    public function resetFilters() { $this->reset('filters'); }
+
     public function render()
     {
         return view('livewire.dashboard', [
-            'transactions' => Transaction::search('title', $this->search)->orderBy($this->sortField, $this->sortDirection)->paginate(10),
+            'transactions' => Transaction::query()
+                ->when($this->filters['status'], fn($query, $status) => $query->where('status', $status))
+                ->when($this->filters['amount-min'], fn($query, $amount) => $query->where('amount', '>=', $amount))
+                ->when($this->filters['amount-max'], fn($query, $amount) => $query->where('amount', '<=', $amount))
+                ->when($this->filters['date-min'], fn($query, $date) => $query->where('date', '>=', Carbon::parse($date)))
+                ->when($this->filters['date-max'], fn($query, $date) => $query->where('date', '<=', Carbon::parse($date)))
+                ->when($this->filters['search'], fn($query, $search) => $query->where('title', 'like', '%'.$search.'%'))
+                ->orderBy($this->sortField, $this->sortDirection)
+                ->paginate(10),
         ]);
     }
 }
