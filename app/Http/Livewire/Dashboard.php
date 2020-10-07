@@ -13,8 +13,25 @@ class Dashboard extends Component
     public $search = '';
     public $sortField;
     public $sortDirection = 'asc';
+    public $showEditModal = false;
+    public Transaction $editing;
 
     protected $queryString = ['sortField', 'sortDirection'];
+
+    public function rules()
+    {
+        return [
+            'editing.title' => 'required|min:3',
+            'editing.amount' => 'required',
+            'editing.status' => 'required|in:'.collect(Transaction::STATUSES)->keys()->implode(','),
+            'editing.date_for_editing' => 'required',
+        ];
+    }
+
+    public function mount()
+    {
+        $this->editing = Transaction::make(['date' => now()]);
+    }
 
     public function sortBy($field)
     {
@@ -23,6 +40,22 @@ class Dashboard extends Component
             : 'asc';
 
         $this->sortField = $field;
+    }
+
+    public function edit(Transaction $transaction)
+    {
+        $this->editing = $transaction;
+
+        $this->showEditModal = true;
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        $this->editing->save();
+
+        $this->showEditModal = false;
     }
 
     public function render()

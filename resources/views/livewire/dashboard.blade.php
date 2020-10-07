@@ -15,6 +15,7 @@
                     <x-table.heading sortable wire:click="sortBy('amount')" :direction="$sortField === 'amount' ? $sortDirection : null">Amount</x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">Status</x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('date')" :direction="$sortField === 'date' ? $sortDirection : null">Date</x-table.heading>
+                    <x-table.heading />
                 </x-slot>
 
                 <x-slot name="body">
@@ -43,6 +44,10 @@
                         <x-table.cell>
                             {{ $transaction->date_for_humans }}
                         </x-table.cell>
+
+                        <x-table.cell>
+                            <x-button.link wire:click="edit({{ $transaction->id }})">Edit</x-button.link>
+                        </x-table.cell>
                     </x-table.row>
                     @empty
                     <x-table.row>
@@ -62,4 +67,38 @@
             </div>
         </div>
     </div>
+
+    <form wire:submit.prevent="save">
+        <x-modal.dialog wire:model.defer="showEditModal">
+            <x-slot name="title">Edit Transaction</x-slot>
+
+            <x-slot name="content">
+                <x-input.group for="title" label="Title" :error="$errors->first('editing.title')">
+                    <x-input.text wire:model="editing.title" id="title" />
+                </x-input.group>
+
+                <x-input.group for="amount" label="Amount" :error="$errors->first('editing.amount')">
+                    <x-input.money wire:model="editing.amount" id="amount" />
+                </x-input.group>
+
+                <x-input.group for="status" label="Status" :error="$errors->first('editing.status')">
+                    <x-input.select wire:model="editing.status" id="status">
+                        @foreach (App\Models\Transaction::STATUSES as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </x-input.select>
+                </x-input.group>
+
+                <x-input.group for="date_for_editing" label="Date" :error="$errors->first('editing.date_for_editing')">
+                    <x-input.date wire:model="editing.date_for_editing" id="date_for_editing" />
+                </x-input.group>
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-button.secondary wire:click="$set('showEditModal', false)">Cancel</x-button.primary>
+
+                <x-button.primary type="submit">Save</x-button.primary>
+            </x-slot>
+        </x-modal.dialog>
+    </form>
 </div>
