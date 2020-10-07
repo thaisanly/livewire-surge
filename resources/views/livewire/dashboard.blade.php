@@ -15,7 +15,7 @@
                         <x-icon.download class="text-cool-gray-400"/> <span>Export</span>
                     </x-dropdown.item>
 
-                    <x-dropdown.item type="button" wire:click="deleteSelected" class="flex items-center space-x-2">
+                    <x-dropdown.item type="button" wire:click="$toggle('showDeleteModal')" class="flex items-center space-x-2">
                         <x-icon.trash class="text-cool-gray-400"/> <span>Delete</span>
                     </x-dropdown.item>
                 </x-dropdown>
@@ -65,7 +65,7 @@
             <x-table>
                 <x-slot name="head">
                     <x-table.heading class="pr-0 w-8">
-                        <x-input.checkbox />
+                        <x-input.checkbox wire:model="selectPage" />
                     </x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null" class="w-full">Title</x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('amount')" :direction="$sortField === 'amount' ? $sortDirection : null">Amount</x-table.heading>
@@ -75,6 +75,21 @@
                 </x-slot>
 
                 <x-slot name="body">
+                    @if ($selectPage)
+                    <x-table.row class="bg-cool-gray-200" wire:key="row-message">
+                        <x-table.cell colspan="6">
+                            @unless ($selectAll)
+                            <div>
+                                <span>You have selected <strong>{{ $transactions->count() }}</strong> transactions, do you want to select all <strong>{{ $transactions->total() }}</strong>?</span>
+                                <x-button.link wire:click="selectAll" class="ml-1 text-blue-600">Select All</x-button.link>
+                            </div>
+                            @else
+                            <span>You are currently selecting all <strong>{{ $transactions->total() }}</strong> transactions.</span>
+                            @endif
+                        </x-table.cell>
+                    </x-table.row>
+                    @endif
+
                     @forelse ($transactions as $transaction)
                     <x-table.row wire:loading.class.delay="opacity-50" wire:key="row-{{ $transaction->id }}">
                         <x-table.cell class="pr-0">
@@ -111,7 +126,7 @@
                     </x-table.row>
                     @empty
                     <x-table.row>
-                        <x-table.cell colspan="5">
+                        <x-table.cell colspan="6">
                             <div class="flex justify-center items-center space-x-2">
                                 <x-icon.inbox class="h-8 w-8 text-cool-gray-400" />
                                 <span class="font-medium py-8 text-cool-gray-400 text-xl">No transactions found...</span>
@@ -127,6 +142,22 @@
             </div>
         </div>
     </div>
+
+    <form wire:submit.prevent="deleteSelected">
+        <x-modal.confirmation wire:model.defer="showDeleteModal">
+            <x-slot name="title">Delete Transaction</x-slot>
+
+            <x-slot name="content">
+                Are you sure you want to delete these transactions? This action is irreversible.
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-button.secondary wire:click="$set('showDeleteModal', false)">Cancel</x-button.primary>
+
+                <x-button.primary type="submit">Delete</x-button.primary>
+            </x-slot>
+        </x-modal.confirmation>
+    </form>
 
     <form wire:submit.prevent="save">
         <x-modal.dialog wire:model.defer="showEditModal">
