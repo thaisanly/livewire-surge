@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         Builder::macro('toCsv', function () {
             $results = $this->get();
 
-            if ($results->empty()) return;
+            if ($results->count() < 1) return;
 
             $titles = implode(',', array_keys((array) $results->first()->getAttributes()));
 

@@ -9,7 +9,16 @@
                 <x-button.link wire:click="$toggle('showFilters')">@if ($showFilters) Hide @endif Advanced Search...</x-button.link>
             </div>
 
-            <div>
+            <div class="space-x-2">
+                <x-dropdown label="Bulk Actions">
+                    <x-dropdown.item type="button" wire:click="exportSelected" class="flex items-center space-x-2">
+                        <x-icon.download class="text-cool-gray-400"/> <span>Export</span>
+                    </x-dropdown.item>
+
+                    <x-dropdown.item type="button" wire:click="deleteSelected" class="flex items-center space-x-2">
+                        <x-icon.trash class="text-cool-gray-400"/> <span>Delete</span>
+                    </x-dropdown.item>
+                </x-dropdown>
                 <x-button.primary wire:click="create"><x-icon.plus/> New</x-button.primary>
             </div>
         </div>
@@ -55,6 +64,9 @@
         <div class="flex-col space-y-4">
             <x-table>
                 <x-slot name="head">
+                    <x-table.heading class="pr-0 w-8">
+                        <x-input.checkbox />
+                    </x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('title')" :direction="$sortField === 'title' ? $sortDirection : null" class="w-full">Title</x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('amount')" :direction="$sortField === 'amount' ? $sortDirection : null">Amount</x-table.heading>
                     <x-table.heading sortable wire:click="sortBy('status')" :direction="$sortField === 'status' ? $sortDirection : null">Status</x-table.heading>
@@ -64,7 +76,11 @@
 
                 <x-slot name="body">
                     @forelse ($transactions as $transaction)
-                    <x-table.row wire:loading.class.delay="opacity-50">
+                    <x-table.row wire:loading.class.delay="opacity-50" wire:key="row-{{ $transaction->id }}">
+                        <x-table.cell class="pr-0">
+                            <x-input.checkbox wire:model="selected" value="{{ $transaction->id }}" />
+                        </x-table.cell>
+
                         <x-table.cell>
                             <span href="#" class="inline-flex space-x-2 truncate text-sm leading-5">
                                 <x-icon.cash class="text-cool-gray-400"/>
