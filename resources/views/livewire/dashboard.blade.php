@@ -2,6 +2,7 @@
     <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
 
     <div class="py-4 space-y-4">
+        <!-- Top Bar -->
         <div class="flex justify-between">
             <div class="w-2/4 flex space-x-4">
                 <x-input.text wire:model="filters.search" placeholder="Search Transactions..." />
@@ -23,6 +24,7 @@
             </div>
         </div>
 
+        <!-- Advanced Search -->
         <div>
             @if ($showFilters)
             <div class="bg-cool-gray-200 p-4 rounded shadow-inner flex relative">
@@ -61,6 +63,7 @@
             @endif
         </div>
 
+        <!-- Transactions Table -->
         <div class="flex-col space-y-4">
             <x-table>
                 <x-slot name="head">
@@ -143,6 +146,7 @@
         </div>
     </div>
 
+    <!-- Delete Transactions Modal -->
     <form wire:submit.prevent="deleteSelected">
         <x-modal.confirmation wire:model.defer="showDeleteModal">
             <x-slot name="title">Delete Transaction</x-slot>
@@ -159,6 +163,7 @@
         </x-modal.confirmation>
     </form>
 
+    <!-- Save Transaction Modal -->
     <form wire:submit.prevent="save">
         <x-modal.dialog wire:model.defer="showEditModal">
             <x-slot name="title">Edit Transaction</x-slot>
