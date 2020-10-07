@@ -30,7 +30,7 @@ class Dashboard extends Component
 
     public function mount()
     {
-        $this->editing = Transaction::make(['date' => now()]);
+        $this->editing = $this->makeBlankTransaction();
     }
 
     public function sortBy($field)
@@ -42,9 +42,21 @@ class Dashboard extends Component
         $this->sortField = $field;
     }
 
+    public function makeBlankTransaction()
+    {
+        return Transaction::make(['date' => now(), 'status' => 'success']);
+    }
+
+    public function create()
+    {
+        if ($this->editing->getKey()) $this->editing = $this->makeBlankTransaction();
+
+        $this->showEditModal = true;
+    }
+
     public function edit(Transaction $transaction)
     {
-        $this->editing = $transaction;
+        if ($this->editing->isNot($transaction)) $this->editing = $transaction;
 
         $this->showEditModal = true;
     }
