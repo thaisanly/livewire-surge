@@ -25,7 +25,7 @@ trait WithBulkActions
     {
         if ($value) return $this->selectPageRows();
 
-
+        $this->selectAll = false;
         $this->selected = [];
     }
 
@@ -39,7 +39,7 @@ trait WithBulkActions
         $this->selectAll = true;
     }
 
-    public function getSelectedRowsQuery()
+    public function getSelectedRowsQueryProperty()
     {
         return (clone $this->rowsQuery)
             ->unless($this->selectAll, fn($query) => $query->whereKey($this->selected));

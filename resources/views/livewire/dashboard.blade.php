@@ -28,6 +28,7 @@
                         <x-icon.trash class="text-cool-gray-400"/> <span>Delete</span>
                     </x-dropdown.item>
                 </x-dropdown>
+
                 <x-button.primary wire:click="create"><x-icon.plus/> New</x-button.primary>
             </div>
         </div>
@@ -160,7 +161,7 @@
             <x-slot name="title">Delete Transaction</x-slot>
 
             <x-slot name="content">
-                Are you sure you want to delete these transactions? This action is irreversible.
+                <div class="py-8 text-cool-gray-700">Are you sure you? This action is irreversible.</div>
             </x-slot>
 
             <x-slot name="footer">
