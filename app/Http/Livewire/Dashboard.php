@@ -26,7 +26,7 @@ class Dashboard extends Component
     ];
     public Transaction $editing;
 
-    protected $queryString = ['sortField', 'sortDirection'];
+    protected $queryString = [];
 
     public function rules() { return [
         'editing.title' => 'required|min:3',
