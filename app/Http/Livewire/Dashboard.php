@@ -28,6 +28,8 @@ class Dashboard extends Component
 
     protected $queryString = [];
 
+    protected $listeners = ['refreshTransactions' => '$refresh'];
+
     public function rules() { return [
         'editing.title' => 'required|min:3',
         'editing.amount' => 'required',
