@@ -4,14 +4,14 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Transaction;
-use Livewire\WithPagination;
 use Illuminate\Support\Carbon;
 use App\Http\Livewire\DataTable\WithSorting;
 use App\Http\Livewire\DataTable\WithBulkActions;
+use App\Http\Livewire\DataTable\WithPerPagePagination;
 
 class Dashboard extends Component
 {
-    use WithPagination, WithSorting, WithBulkActions;
+    use WithPerPagePagination, WithSorting, WithBulkActions;
 
     public $showDeleteModal = false;
     public $showEditModal = false;
@@ -97,7 +97,7 @@ class Dashboard extends Component
 
     public function getRowsProperty()
     {
-        return $this->rowsQuery->paginate(10);
+        return $this->applyPagination($this->rowsQuery);
     }
 
     public function render()
