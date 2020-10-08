@@ -6,12 +6,13 @@ use Livewire\Component;
 use App\Models\Transaction;
 use Illuminate\Support\Carbon;
 use App\Http\Livewire\DataTable\WithSorting;
+use App\Http\Livewire\DataTable\WithCachedRows;
 use App\Http\Livewire\DataTable\WithBulkActions;
 use App\Http\Livewire\DataTable\WithPerPagePagination;
 
 class Dashboard extends Component
 {
-    use WithPerPagePagination, WithSorting, WithBulkActions;
+    use WithPerPagePagination, WithSorting, WithBulkActions, WithCachedRows;
 
     public $showDeleteModal = false;
     public $showEditModal = false;
@@ -59,8 +60,17 @@ class Dashboard extends Component
         return Transaction::make(['date' => now(), 'status' => 'success']);
     }
 
+    public function toggleShowFilters()
+    {
+        $this->useCachedRows();
+
+        $this->showFilters = ! $this->showFilters;
+    }
+
     public function create()
     {
+        $this->useCachedRows();
+
         if ($this->editing->getKey()) $this->editing = $this->makeBlankTransaction();
 
         $this->showEditModal = true;
@@ -68,6 +78,8 @@ class Dashboard extends Component
 
     public function edit(Transaction $transaction)
     {
+        $this->useCachedRows();
+
         if ($this->editing->isNot($transaction)) $this->editing = $transaction;
 
         $this->showEditModal = true;
@@ -99,7 +111,9 @@ class Dashboard extends Component
 
     public function getRowsProperty()
     {
-        return $this->applyPagination($this->rowsQuery);
+        return $this->cache(function () {
+            return $this->applyPagination($this->rowsQuery);
+        });
     }
 
     public function render()
