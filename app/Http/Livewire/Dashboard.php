@@ -27,7 +27,7 @@ class Dashboard extends Component
     ];
     public Transaction $editing;
 
-    protected $queryString = [];
+    protected $queryString = ['sorts'];
 
     protected $listeners = ['refreshTransactions' => '$refresh'];
 
