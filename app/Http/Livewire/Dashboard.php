@@ -50,9 +50,13 @@ class Dashboard extends Component
 
     public function deleteSelected()
     {
+        $deleteCount = $this->selectedRowsQuery->count();
+
         $this->selectedRowsQuery->delete();
 
         $this->showDeleteModal = false;
+
+        $this->notify('You\'ve deleted '.$deleteCount.' transactions');
     }
 
     public function makeBlankTransaction()
