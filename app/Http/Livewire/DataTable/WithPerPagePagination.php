@@ -10,7 +10,7 @@ trait WithPerPagePagination
 
     public $perPage = 10;
 
-    public function initializeWithPerPagePagination()
+    public function mountWithPerPagePagination()
     {
         $this->perPage = session()->get('perPage', $this->perPage);
     }
