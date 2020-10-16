@@ -1467,7 +1467,7 @@
             "dist": {
                 "type": "path",
                 "url": "../livewire",
-                "reference": "ec18f7dd36ca9347b6c46b547c0eb6785afb297c"
+                "reference": "0674d4cb8e598ce67df00fb95472c73e668b1416"
             },
             "require": {
                 "illuminate/database": "^7.0|^8.0",
@@ -1497,6 +1497,9 @@
                 }
             },
             "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
                 "psr-4": {
                     "Livewire\\": "src/"
                 }
