@@ -1,6 +1,6 @@
 ---
-name: New Issues
-about: Describe this issue template's purpose here.
+name: New Issue
+about: (Please don't open issues on this repo)
 title: ''
 labels: ''
 assignees: ''
