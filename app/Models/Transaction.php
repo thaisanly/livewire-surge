@@ -18,6 +18,7 @@ class Transaction extends Model
 
     protected $guarded = [];
     protected $casts = ['date' => 'date'];
+    protected $appends = ['date_for_editing'];
 
     public function getStatusColorAttribute()
     {
