@@ -3,15 +3,15 @@
 
     <form wire:submit.prevent="save">
         <div class="mt-6 sm:mt-5">
-            <x-input.group label="Username" for="username" :error="$errors->first('username')">
+            <x-input.group label="Username" for="username" :error="$errors->first('user.username')">
                 <x-input.text wire:model="user.username" id="username" leading-add-on="surge.com/" />
             </x-input.group>
 
-            <x-input.group label="Birthday" for="birthday" :error="$errors->first('birthday')">
+            <x-input.group label="Birthday" for="birthday" :error="$errors->first('user.birthday')">
                 <x-input.date wire:model="user.birthday" id="birthday" placeholder="MM/DD/YYYY" />
             </x-input.group>
 
-            <x-input.group label="About" for="about" :error="$errors->first('about')" help-text="Write a few sentances about yourself.">
+            <x-input.group label="About" for="about" :error="$errors->first('user.about')" help-text="Write a few sentances about yourself.">
                 <x-input.rich-text wire:model.defer="user.about" id="about" />
             </x-input.group>
 
